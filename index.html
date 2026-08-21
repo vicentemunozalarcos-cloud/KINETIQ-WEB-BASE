@@ -765,44 +765,69 @@
       box-shadow: var(--shadow-hover);
       border-radius: var(--radius-md);
     }
-    /* Icono animado en la esquina de cada servicio. Movimiento muy
-       lento y contenido: acompaña, no compite con el texto. */
     .srv-ico-wrap {
       position: absolute; top: 1.9rem; right: 1.9rem;
       pointer-events: none; opacity: 0.85;
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .srv-card:hover .srv-ico-wrap { opacity: 1; transform: scale(1.06); }
-    .srv-ico { width: 44px; height: 44px; color: var(--verde); display: block; }
+
+    /* Icono animado de cada servicio. Ciclos largos y amplitudes
+       pequeñas: se percibe el movimiento sin que distraiga al leer. */
+    .srv-ico { width: 46px; height: 46px; color: var(--verde); display: block; overflow: visible; }
     .srv-card-dark .srv-ico { color: rgba(255,255,255,0.5); }
 
-    @keyframes srvLate  { 0%,100% { opacity:.55 } 50% { opacity:1 } }
-    @keyframes srvOnda  { 0%,100% { opacity:.25; transform:scaleX(1) } 50% { opacity:.9; transform:scaleX(1.18) } }
-    @keyframes srvTraza { 0% { stroke-dashoffset:60 } 55%,100% { stroke-dashoffset:0 } }
-    @keyframes srvPunto { 0%,55% { transform:translate(0,0) } 100% { transform:translate(32px,-27px) } }
-    @keyframes srvPesa  { 0%,100% { transform:translateY(3px) } 50% { transform:translateY(-3px) } }
-    @keyframes srvHoja  { 0%,100% { transform:rotate(0deg) } 50% { transform:rotate(-9deg) } }
-    .srv-ico-late  { animation: srvLate  2.6s ease-in-out infinite; }
-    .srv-ico-onda  { animation: srvOnda  2.6s ease-in-out infinite; transform-origin: 24px 27px; }
-    .srv-ico-traza { animation: srvTraza 4s   ease-in-out infinite; }
-    .srv-ico-punto { animation: srvPunto 4s   ease-in-out infinite; }
-    .srv-ico-pesa  { animation: srvPesa  3s   ease-in-out infinite; transform-origin: 24px 24px; }
-    .srv-ico-hoja  { animation: srvHoja  3.4s ease-in-out infinite; transform-origin: 24px 12px; }
+    /* 01 · columna */
+    @keyframes i1Nucleo { 0%,100% { opacity:.5; transform:scale(1) } 50% { opacity:1; transform:scale(1.09) } }
+    @keyframes i1Vert   { 0%,100% { opacity:.55 } 50% { opacity:.85 } }
+    @keyframes i1Onda   { 0% { opacity:0; transform:scaleX(.6) } 35% { opacity:.85 } 100% { opacity:0; transform:scaleX(1.35) } }
+    .i1-nucleo { animation: i1Nucleo 2.8s ease-in-out infinite; transform-origin: 24px 25px; transform-box: fill-box; }
+    .i1-v  { animation: i1Vert 2.8s ease-in-out infinite; }
+    .i1-v2, .i1-v3 { animation-delay: .18s; }
+    .i1-v1, .i1-v4 { animation-delay: .36s; }
+    .i1-onda { animation: i1Onda 2.8s ease-out infinite; transform-origin: 24px 26px; }
+    .i1-o2 { animation-delay: .45s; }
 
+    /* 02 · rehabilitación */
+    @keyframes i2Traza   { 0% { stroke-dashoffset:58 } 60%,100% { stroke-dashoffset:0 } }
+    @keyframes i2Punta   { 0%,55% { opacity:0; transform:translate(-3px,3px) } 75%,100% { opacity:1; transform:none } }
+    @keyframes i2Escalon { 0%,20% { opacity:0 } 55%,100% { opacity:.28 } }
+    .i2-traza   { animation: i2Traza 4.2s ease-in-out infinite; }
+    .i2-punta   { animation: i2Punta 4.2s ease-out infinite; }
+    .i2-escalon { animation: i2Escalon 4.2s ease-out infinite; }
+
+    /* 03 · mancuerna */
+    @keyframes i3Curl   { 0%,100% { transform:translateY(4px) rotate(-7deg) } 45%,55% { transform:translateY(-5px) rotate(7deg) } }
+    @keyframes i3Disco  { 0%,100% { transform:scaleY(1) } 45%,55% { transform:scaleY(1.12) } }
+    @keyframes i3Chispa { 0%,35% { opacity:0; transform:translateY(4px) } 48%,58% { opacity:.85; transform:none } 70%,100% { opacity:0 } }
+    .i3-curl   { animation: i3Curl 3.2s ease-in-out infinite; transform-origin: 24px 24px; }
+    .i3-disco  { animation: i3Disco 3.2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+    .i3-chispa { animation: i3Chispa 3.2s ease-out infinite; }
+
+    /* 04 · nutrición */
+    @keyframes i4Fruta  { 0%,100% { transform:scale(1) } 50% { transform:scale(1.05) } }
+    @keyframes i4Hoja   { 0%,100% { transform:rotate(0deg) } 30% { transform:rotate(-11deg) } 65% { transform:rotate(5deg) } }
+    @keyframes i4Brillo { 0%,55% { opacity:0; transform:scale(.5) } 70% { opacity:.9; transform:scale(1) } 100% { opacity:0; transform:scale(1.2) } }
+    .i4-fruta  { animation: i4Fruta 3.6s ease-in-out infinite; transform-origin: 24px 30px; }
+    .i4-hoja   { animation: i4Hoja 3.6s ease-in-out infinite; transform-origin: 24px 12px; }
+    .i4-brillo { animation: i4Brillo 3.6s ease-out infinite; transform-origin: 38px 24px; }
+
+    /* En móvil las tarjetas son anchas: el icono puede crecer */
     @media (max-width: 540px) {
-      .srv-ico-wrap { top: 1.6rem; right: 1.6rem; }
-      .srv-ico { width: 38px; height: 38px; }
+      .srv-ico { width: 60px; height: 60px; }
     }
-    /* Quien pida menos movimiento ve el icono quieto */
     @media (prefers-reduced-motion: reduce) {
-      .srv-ico-late, .srv-ico-onda, .srv-ico-traza,
-      .srv-ico-punto, .srv-ico-pesa, .srv-ico-hoja { animation: none; }
-      .srv-ico-traza { stroke-dashoffset: 0; }
-      .srv-ico-wrap { transition: none; }
+      .srv-ico * { animation: none !important; }
+      .i2-traza { stroke-dashoffset: 0; }
+      .i2-punta, .i2-escalon, .i3-chispa, .i4-brillo { opacity: 1; }
     }
 
-    /* El número deja sitio al icono */
+    /* El número y el título dejan sitio al icono */
     .srv-card h3 { padding-right: 3.5rem; }
+    @media (max-width: 540px) {
+      .srv-ico-wrap { top: 1.7rem; right: 1.7rem; }
+      .srv-card h3 { padding-right: 4.75rem; }
+    }
 
     .srv-num {
       font-family: var(--font-display);
@@ -1298,6 +1323,9 @@
     @media (prefers-reduced-motion: reduce) {
       .serv-overlay, .serv-card, .serv-cta, .srv-flecha { transition: none; }
     }
+
+    /* Con un número impar de opciones, la última ocupa el ancho entero */
+    .opt-grid-2 > .opt-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
     /* ── Carrusel de reseñas ── */
     .resenas-wrap { position: relative; margin-top: var(--space-md); }
@@ -2780,7 +2808,7 @@
           <li><div class="ck">✓</div>Tratamiento manual y tecnología avanzada</li>
           <li><div class="ck">✓</div>Seguimiento hasta tu alta total</li>
         </ul>
-        <a href="#" class="aud-cta" onclick="abrirModal('fisio');return false;">Quiero dejar el dolor <span class="cta-flecha">→</span></a>
+        <a href="#" class="aud-cta" onclick="abrirModalPerfil('fisio');return false;">Quiero dejar el dolor <span class="cta-flecha">→</span></a>
       </div>
 
       <div class="aud-card ac-green fu d2">
@@ -2799,7 +2827,7 @@
           <li><div class="ck">✓</div>Mejora de hábitos y aumento de la calidad de vida</li>
           <li><div class="ck">✓</div>Seguimiento de objetivos adaptados</li>
         </ul>
-        <a href="#" class="aud-cta" onclick="abrirModal('entreno');return false;">Empezar a invertir en mí <span class="cta-flecha">→</span></a>
+        <a href="#" class="aud-cta" onclick="abrirModalPerfil('entreno');return false;">Empezar a invertir en mí <span class="cta-flecha">→</span></a>
       </div>
 
     </div>
@@ -2817,7 +2845,7 @@
     <div class="srv-grid">
 
       <div class="srv-card fu d1">
-        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"> <rect x="17" y="6" width="14" height="6" rx="3"/> <rect x="16" y="15" width="16" height="6" rx="3"/> <rect class="srv-ico-late" x="15" y="24" width="18" height="7" rx="3.5"/> <rect x="16" y="34" width="16" height="6" rx="3"/> </g> <g class="srv-ico-onda" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"> <path d="M9 23a9 9 0 0 0 0 9"/> <path d="M39 23a9 9 0 0 1 0 9"/> </g> </svg></span>
+        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"> <rect x="17.5" y="5" width="13" height="5.5" rx="2.75" class="i1-v i1-v1"/> <rect x="16.5" y="13" width="15" height="6" rx="3" class="i1-v i1-v2"/> <rect x="15" y="21.5" width="18" height="7" rx="3.5" class="i1-nucleo"/> <rect x="16.5" y="31" width="15" height="6" rx="3" class="i1-v i1-v3"/> <rect x="17.5" y="39.5" width="13" height="5.5" rx="2.75" class="i1-v i1-v4"/> </g> <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"> <path class="i1-onda i1-o1" d="M11 20a10 10 0 0 0 0 12"/> <path class="i1-onda i1-o2" d="M6.5 17a15 15 0 0 0 0 18"/> <path class="i1-onda i1-o1" d="M37 20a10 10 0 0 1 0 12"/> <path class="i1-onda i1-o2" d="M41.5 17a15 15 0 0 1 0 18"/> </g> </svg></span>
         <div class="srv-num">01</div>
         <h3>Fisioterapia Clínica</h3>
         <p>Razonamiento y tratamiento para dolores de espalda, cervicales, articulaciones y lesiones musculares.</p>
@@ -2825,7 +2853,7 @@
       </div>
 
       <div class="srv-card fu d2">
-        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M6 40h36" opacity="0.35"/> <path class="srv-ico-traza" d="M8 36c7-1 12-7 16-15S32 8 40 9" stroke-dasharray="60" stroke-dashoffset="0"/> <path d="M34 8h7v7" /> <circle class="srv-ico-punto" cx="8" cy="36" r="2.6" fill="currentColor" stroke="none"/> </g> </svg></span>
+        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M6 41h36" opacity="0.3"/> <path id="i2-ruta" class="i2-traza" d="M8 37c7-1.5 12.5-7.5 16.5-16S33 8 40 9.5" stroke-dasharray="58" stroke-dashoffset="58"/> <path class="i2-punta" d="M34 8.5l6.5 1-1 6.5"/> <g class="i2-escalon" opacity="0.28"> <path d="M15 41v-4"/><path d="M24 41v-8"/><path d="M33 41v-13"/> </g> </g> <circle r="2.8" fill="currentColor" class="i2-bola"> <animateMotion dur="4.2s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.08;0.72;1" calcMode="linear"> <mpath href="#i2-ruta"/> </animateMotion> </circle> </svg></span>
         <div class="srv-num">02</div>
         <h3>Rehabilitación</h3>
         <p>Recuperación tras un ictus, una cirugía o una lesión deportiva. Un plan progresivo hasta volver a tu vida.</p>
@@ -2833,7 +2861,7 @@
       </div>
 
       <div class="srv-card fu d3">
-        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g class="srv-ico-pesa" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 24h18"/> <rect x="5" y="16" width="6" height="16" rx="3"/> <rect x="11" y="19" width="4" height="10" rx="2"/> <rect x="37" y="16" width="6" height="16" rx="3"/> <rect x="33" y="19" width="4" height="10" rx="2"/> </g> </svg></span>
+        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g class="i3-curl"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15.5 24h17"/> <rect x="4" y="15.5" width="6" height="17" rx="3" class="i3-disco"/> <rect x="10" y="19" width="4" height="10" rx="2"/> <rect x="38" y="15.5" width="6" height="17" rx="3" class="i3-disco"/> <rect x="34" y="19" width="4" height="10" rx="2"/> </g> </g> <g class="i3-chispa" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"> <path d="M24 7V3"/><path d="M15 9.5l-2-3.5"/><path d="M33 9.5l2-3.5"/> </g> </svg></span>
         <div class="srv-num">03</div>
         <h3>Entrenamiento Personal en Grupos Reducidos</h3>
         <p>Programas de fuerza, movilidad y salud guiados por fisioterapeutas y entrenadores con visión clínica.</p>
@@ -2843,7 +2871,7 @@
 
 
       <div class="srv-card fu d3">
-        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M24 15c-3-3-8-3-11 0s-3 10 0 15 8 11 11 11 8-6 11-11 3-12 0-15-8-3-11 0z"/> <path class="srv-ico-tallo" d="M24 15V8"/> <path class="srv-ico-hoja" d="M24 11c4-5 9-4 10-4 0 1 0 6-5 7-2 .4-4 0-5-3z"/> </g> </svg></span>
+        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g class="i4-fruta" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M24 16c-3-2.8-7.7-2.8-10.6 0S10 26 13 31s7.7 11 11 11 8-6 11-11 3.3-12.2.6-15-7.6-2.8-10.6 0z"/> <path d="M24 16V9" class="i4-tallo"/> </g> <path class="i4-hoja" d="M24 12.5c3.6-4.8 8.6-4 9.6-3.8.2 1-.2 6-5 7-1.9.4-3.7-.2-4.6-3.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/> <g class="i4-brillo" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M38 22v4"/><path d="M36 24h4"/> </g> </svg></span>
         <div class="srv-num">04</div>
         <h3>Nutrición</h3>
         <p>Pautas realistas adaptadas a tu vida, a tu entrenamiento y a tu situación clínica.</p>
@@ -3489,6 +3517,7 @@
   //   MODAL VALORACIÓN INTELIGENTE v3 — Mobile-First
   // ═══════════════════════════════════════════════════
   var _obj='', _zona='', _tiempo='', _noche='', _meds='', _reposo='', _nivel='', _centro='';
+  var _contexto='generico', _objLabel='';
   var _currentPaso = 1;
 
   // ── Los dos centros Kinetiq: cada uno con su WhatsApp ──
@@ -3507,29 +3536,127 @@
     }
   };
 
+
+  // ═══════════════════════════════════════════════════
+  //   PASO 1 — qué se pregunta según de dónde se entre
+  //   ────────────────────────────────────────────────
+  //   flujo: 'fisio'   → paso 2 con el mapa del cuerpo
+  //          'entreno' → paso 2 con el nivel de experiencia
+  //          'directo' → sin paso 2, va al contacto (2 pasos)
+  // ═══════════════════════════════════════════════════
+  var OBJETIVOS = {
+    generico: {
+      titulo: '¿Cuál es tu <em>objetivo</em>?',
+      sub: 'Cuéntanos qué te trae por aquí y personalizamos tu valoración.',
+      servicio: '',
+      opciones: [
+        { ico:'🦴', label:'Fisioterapia',  desc:'Dolor, lesión o recuperación', flujo:'fisio'   },
+        { ico:'💪', label:'Entrenamiento', desc:'Salud y calidad de vida',      flujo:'entreno' }
+      ]
+    },
+    fisio: {
+      titulo: '¿Qué necesitas de <em>fisioterapia</em>?',
+      sub: 'Elige por dónde empezamos y adaptamos la valoración.',
+      servicio: 'Fisioterapia Clínica',
+      opciones: [
+        { ico:'🔎',  label:'Valoración ecográfica',  desc:'Ver el tejido antes de decidir',   flujo:'fisio' },
+        { ico:'🖐️', label:'Valoración y tratamiento', desc:'Diagnóstico y terapia manual',   flujo:'fisio' },
+        { ico:'🌀',  label:'Presoterapia',           desc:'Recuperación y retorno venoso',    flujo:'fisio' }
+      ]
+    },
+    rehab: {
+      titulo: '¿Qué hay que <em>rehabilitar</em>?',
+      sub: 'Cuéntanos tu situación para prepararte la primera visita.',
+      servicio: 'Rehabilitación',
+      opciones: [
+        { ico:'🧠', label:'Ictus',                     desc:'Movilidad y autonomía',        flujo:'directo' },
+        { ico:'❤️', label:'Patología cardíaca',        desc:'Ejercicio supervisado',        flujo:'directo' },
+        { ico:'🩹', label:'Rehabilitación post quirófano', desc:'Después de una cirugía',   flujo:'directo' },
+        { ico:'🏃', label:'Readaptación deportiva',    desc:'Volver a competir',            flujo:'directo' }
+      ]
+    },
+    entreno: {
+      titulo: '¿Qué quieres <em>trabajar</em>?',
+      sub: 'Así montamos tu programa desde el primer día.',
+      servicio: 'Entrenamiento Personal en Grupos Reducidos',
+      opciones: [
+        { ico:'🤰',  label:'Suelo pélvico',        desc:'Postparto y recuperación',  flujo:'entreno' },
+        { ico:'🏋️', label:'Fuerza',               desc:'La base de todo lo demás',  flujo:'entreno' },
+        { ico:'🏃',  label:'Vuelta al deporte',    desc:'Después de una lesión',     flujo:'entreno' },
+        { ico:'🧓',  label:'Adulto mayor',         desc:'Autonomía y calidad de vida', flujo:'entreno' }
+      ]
+    },
+    nutricion: {
+      titulo: '¿Qué buscas en <em>nutrición</em>?',
+      sub: 'Para que la primera consulta vaya directa a lo tuyo.',
+      servicio: 'Nutrición',
+      opciones: [
+        { ico:'📊', label:'Composición corporal', desc:'Peso, grasa y masa muscular', flujo:'directo' },
+        { ico:'🥗', label:'Hábitos saludables',   desc:'Comer mejor en el día a día', flujo:'directo' },
+        { ico:'🩺', label:'Patología',            desc:'Pauta adaptada a tu condición', flujo:'directo' }
+      ]
+    }
+  };
+
   // Render nav buttons based on current step
   function renderNav(paso) {
     var nav = document.getElementById('modalNav');
+    var total = pasosDe().length;
+    var volver = '<button class="btn-modal-back" onclick="irPaso(' + (paso-1) + ')">← Volver</button>';
     if (paso === 1) {
-      nav.innerHTML = '<button class="btn-modal-next" id="nextP1" disabled onclick="irPaso(2)">Continuar →</button>';
-    } else if (paso === 2) {
-      nav.innerHTML = '<button class="btn-modal-back" onclick="irPaso(1)">← Volver</button><button class="btn-modal-next" onclick="irPaso(3)">Continuar →</button>';
-    } else if (paso === 3) {
-      nav.innerHTML = '<button class="btn-modal-back" onclick="irPaso(2)">← Volver</button>'
+      nav.innerHTML = '<button class="btn-modal-next" id="nextP1"' + (_obj ? '' : ' disabled')
+                    + ' onclick="irPaso(2)">Continuar →</button>';
+    } else if (paso < total) {
+      nav.innerHTML = volver + '<button class="btn-modal-next" onclick="irPaso(' + (paso+1) + ')">Continuar →</button>';
+    } else {
+      nav.innerHTML = volver
                     + '<button class="btn-modal-next" id="btnEnviar"' + (_centro ? '' : ' disabled')
                     + ' onclick="finalizarFormulario()">' + textoBotonEnviar() + '</button>';
     }
   }
 
+  // presel: clave de OBJETIVOS ('fisio','rehab','entreno','nutricion')
+  // o nada para el cuestionario general de los dos perfiles.
   function abrirModal(presel) {
     cerrarMenu();
+    _contexto = OBJETIVOS[presel] ? presel : 'generico';
     document.getElementById('modalOverlay').classList.add('activo');
     document.body.classList.add('modal-abierto');
     document.body.style.overflow = 'hidden';
     resetModal();
+    renderPaso1();
     irPaso(1);
-    if (presel === 'fisio')   { setTimeout(function(){ selObjetivo('fisio');   }, 60); }
-    if (presel === 'entreno') { setTimeout(function(){ selObjetivo('entreno'); }, 60); }
+  }
+
+  // Desde las tarjetas de perfil: cuestionario general con la opción marcada
+  function abrirModalPerfil(cual) {
+    abrirModal();
+    setTimeout(function(){
+      var i = (cual === 'entreno') ? 1 : 0;
+      var el = document.querySelectorAll('#optGrid .opt-card')[i];
+      if (el) selObjetivo(i, el);
+    }, 60);
+  }
+
+  // Pinta las opciones del paso 1 según de dónde venga la persona
+  function renderPaso1() {
+    var c = OBJETIVOS[_contexto] || OBJETIVOS.generico;
+    document.getElementById('paso1Titulo').innerHTML = c.titulo;
+    document.getElementById('paso1Sub').textContent = c.sub;
+    document.getElementById('optGrid').innerHTML = c.opciones.map(function(o, i){
+      return '<div class="opt-card" onclick="selObjetivo(' + i + ', this)">'
+           +   '<div class="opt-card-icon">' + o.ico + '</div>'
+           +   '<div class="opt-card-label">' + escHTML(o.label) + '</div>'
+           +   '<div class="opt-card-desc">' + escHTML(o.desc) + '</div>'
+           + '</div>';
+    }).join('');
+  }
+
+  // Los pasos que tocan según la opción elegida
+  function pasosDe() {
+    if (_obj === 'fisio')   return ['paso1', 'paso2fisio', 'paso3'];
+    if (_obj === 'entreno') return ['paso1', 'paso2entreno', 'paso3'];
+    return ['paso1', 'paso3'];   // flujo directo: sin paso intermedio
   }
 
   function cerrarModal() {
@@ -3543,7 +3670,7 @@
   }
 
   function resetModal() {
-    _obj=''; _zona=''; _tiempo=''; _noche=''; _meds=''; _reposo=''; _nivel=''; _centro='';
+    _obj=''; _zona=''; _tiempo=''; _noche=''; _meds=''; _reposo=''; _nivel=''; _centro=''; _objLabel='';
     document.querySelectorAll('.opt-card,.zona-btn,.sino-btn,.nivel-btn,.centro-btn').forEach(function(el){ el.classList.remove('sel'); });
     var hint = document.getElementById('centroHint');
     if (hint) {
@@ -3555,40 +3682,43 @@
     });
   }
 
-  function irPaso(n) {
-    _currentPaso = n;
-    // Hide all
-    document.querySelectorAll('.modal-step').forEach(function(s){ s.classList.remove('visible'); });
-    // Progress dots + label
-    var labels = ['Paso 1 de 3','Paso 2 de 3','Paso 3 de 3'];
-    document.getElementById('progLabel').textContent = labels[n-1];
-    ['dot1','dot2','dot3'].forEach(function(id,i){
+  function pintarProgreso(n) {
+    var pasos = pasosDe();
+    document.getElementById('progLabel').textContent = 'Paso ' + n + ' de ' + pasos.length;
+    ['dot1','dot2','dot3'].forEach(function(id, i){
       var d = document.getElementById(id);
+      d.style.display = (i < pasos.length) ? '' : 'none';
       d.classList.remove('done','active');
       if (i < n-1) d.classList.add('done');
       else if (i === n-1) d.classList.add('active');
     });
-    // Show correct step
-    if (n === 1) { document.getElementById('paso1').classList.add('visible'); }
-    else if (n === 2) {
-      var id = _obj === 'fisio' ? 'paso2fisio' : 'paso2entreno';
-      document.getElementById(id).classList.add('visible');
-    } else if (n === 3) {
-      document.getElementById('paso3').classList.add('visible');
-    }
-    // Render buttons
+  }
+
+  function irPaso(n) {
+    var pasos = pasosDe();
+    if (n < 1) n = 1;
+    if (n > pasos.length) n = pasos.length;
+    _currentPaso = n;
+    document.querySelectorAll('.modal-step').forEach(function(s){ s.classList.remove('visible'); });
+    document.getElementById(pasos[n-1]).classList.add('visible');
+    pintarProgreso(n);
     renderNav(n);
-    // Scroll modal body to top
     var body = document.getElementById('modalBody');
     if (body) body.scrollTop = 0;
   }
 
-  function selObjetivo(tipo) {
-    _obj = tipo;
-    document.getElementById('optFisio').classList.toggle('sel', tipo === 'fisio');
-    document.getElementById('optEntreno').classList.toggle('sel', tipo === 'entreno');
+  function selObjetivo(i, el) {
+    var c = OBJETIVOS[_contexto] || OBJETIVOS.generico;
+    var o = c.opciones[i];
+    if (!o) return;
+    _obj = o.flujo;
+    _objLabel = o.label;
+    document.querySelectorAll('#optGrid .opt-card').forEach(function(x){ x.classList.remove('sel'); });
+    if (el) el.classList.add('sel');
     var btn = document.getElementById('nextP1');
     if (btn) btn.disabled = false;
+    // El número de pasos depende de la opción: se repinta la barra
+    pintarProgreso(1);
   }
 
   function selZona(el, zona) {
@@ -3649,7 +3779,14 @@
     var nombre = (document.getElementById('inputNombre').value.trim()) || 'Un paciente';
     var tel    = document.getElementById('inputTel').value.trim() || 'No indicado';
     var centro = CENTROS[_centro];
-    var msg = '';
+    var cfg    = OBJETIVOS[_contexto] || OBJETIVOS.generico;
+
+    var lineas = [];
+    lineas.push('🌟 NUEVA SOLICITUD DESDE LA WEB');
+    lineas.push('🏢 Centro: ' + centro.nombre + ' — ' + centro.dir);
+    lineas.push('👤 Nombre: ' + nombre);
+    if (cfg.servicio) lineas.push('🏥 Servicio: ' + cfg.servicio);
+    lineas.push('🎯 ' + (cfg.servicio ? 'Motivo' : 'Interés') + ': ' + (_objLabel || 'No indicado'));
 
     if (_obj === 'fisio') {
       var tiempo = document.getElementById('selTiempo').value || 'no indicado';
@@ -3657,28 +3794,20 @@
       if (_noche)  detalles.push('Dolor nocturno: ' + _noche);
       if (_meds)   detalles.push('Mejora con medicación: ' + _meds);
       if (_reposo) detalles.push('Mejora con reposo: ' + _reposo);
-      msg = '🌟 NUEVA SOLICITUD DESDE LA WEB\n'
-          + '🏢 Centro: ' + centro.nombre + ' — ' + centro.dir + '\n'
-          + '👤 Nombre: ' + nombre + '\n'
-          + '🏥 Interés: Fisioterapia\n'
-          + '📍 Zona: ' + (_zona || 'No indicada') + '\n'
-          + '⏳ Desde hace: ' + tiempo + '\n'
-          + (detalles.length ? '🔍 Detalles: ' + detalles.join(' · ') + '\n' : '')
-          + '📞 Teléfono: ' + tel + '\n'
-          + '---\n'
-          + '¿Cuándo tenéis hueco en ' + centro.nombre + ' para una valoración?';
-    } else {
+      lineas.push('📍 Zona: ' + (_zona || 'No indicada'));
+      lineas.push('⏳ Desde hace: ' + tiempo);
+      if (detalles.length) lineas.push('🔍 Detalles: ' + detalles.join(' · '));
+    } else if (_obj === 'entreno') {
       var deporte = document.getElementById('inputDeporte').value.trim();
-      msg = '🌟 NUEVA SOLICITUD DESDE LA WEB\n'
-          + '🏢 Centro: ' + centro.nombre + ' — ' + centro.dir + '\n'
-          + '👤 Nombre: ' + nombre + '\n'
-          + '🏥 Interés: Entrenamiento Personal en Grupos Reducidos\n'
-          + '📍 Nivel: ' + (_nivel || 'No indicado') + '\n'
-          + (deporte ? '⚽ Deporte: ' + deporte + '\n' : '')
-          + '📞 Teléfono: ' + tel + '\n'
-          + '---\n'
-          + '¿Cuándo tenéis hueco en ' + centro.nombre + ' para una valoración?';
+      lineas.push('📈 Nivel: ' + (_nivel || 'No indicado'));
+      if (deporte) lineas.push('⚽ Deporte: ' + deporte);
     }
+
+    lineas.push('📞 Teléfono: ' + tel);
+    lineas.push('---');
+    lineas.push('¿Cuándo tenéis hueco en ' + centro.nombre + ' para una valoración?');
+
+    var msg = lineas.join('\n');
 
     // El número depende del centro elegido en el paso 3
     var url = 'https://wa.me/' + centro.wa + '?text=' + encodeURIComponent(msg);
@@ -3756,6 +3885,7 @@
   // ═══════════════════════════════════════════════════
   var SERVICIOS = {
     fisio: {
+      clave: 'fisio',
       num: '01',
       titulo: 'Fisioterapia Clínica',
       intro: 'Valoramos de dónde viene tu dolor antes de tratarlo. Cada técnica se elige por un motivo, no por costumbre.',
@@ -3768,10 +3898,13 @@
         { ico: '🎯', nombre: 'Tratamiento ecoguiado',
           texto: 'Técnicas aplicadas con control ecográfico en tiempo real, para llegar al punto exacto con precisión.' },
         { ico: '⚡', nombre: 'Ondas de choque',
-          texto: 'Estímulo mecánico de alta energía, indicado sobre todo en tendinopatías y dolores que se resisten.' }
+          texto: 'Estímulo mecánico de alta energía, indicado sobre todo en tendinopatías y dolores que se resisten.' },
+        { ico: '🌀', nombre: 'Presoterapia',
+          texto: 'Compresión secuencial en piernas para favorecer el retorno venoso y linfático y ayudar en la recuperación.' }
       ]
     },
     rehab: {
+      clave: 'rehab',
       num: '02',
       titulo: 'Rehabilitación',
       intro: 'Recuperar la función después de algo serio. Progresión medida, sin saltarse pasos y sin quedarse corto.',
@@ -3788,6 +3921,7 @@
       ]
     },
     entreno: {
+      clave: 'entreno',
       num: '03',
       titulo: 'Entrenamiento Personal en Grupos Reducidos',
       intro: 'Grupos pequeños, con fisioterapeutas y entrenadores encima de cada ejercicio. Fuerza con criterio clínico.',
@@ -3806,6 +3940,7 @@
       ]
     },
     nutricion: {
+      clave: 'nutricion',
       num: '04',
       titulo: 'Nutrición',
       intro: 'Lo que comes sostiene lo que entrenas. Pautas realistas, adaptadas a tu vida y a tu situación clínica.',
@@ -3868,9 +4003,9 @@
   // Del detalle del servicio al formulario, con el perfil ya elegido
   function desdeServicioAlFormulario(e) {
     if (e) e.preventDefault();
-    var objetivo = _servicioActual ? _servicioActual.objetivo : null;
+    var clave = _servicioActual ? _servicioActual.clave : null;
     cerrarServicio();
-    setTimeout(function(){ abrirModal(objetivo); }, 180);
+    setTimeout(function(){ abrirModal(clave); }, 180);
     return false;
   }
 
@@ -4453,20 +4588,9 @@
 
       <!-- PASO 1: Objetivo -->
       <div class="modal-step visible" id="paso1">
-        <h2 class="modal-titulo">¿Cuál es tu <em>objetivo</em>?</h2>
-        <p class="modal-sub">Cuéntanos qué te trae por aquí y personalizamos tu valoración.</p>
-        <div class="opt-grid-2">
-          <div class="opt-card" id="optFisio" onclick="selObjetivo('fisio')">
-            <div class="opt-card-icon">🦴</div>
-            <div class="opt-card-label">Fisioterapia</div>
-            <div class="opt-card-desc">Dolor, lesión o recuperación</div>
-          </div>
-          <div class="opt-card" id="optEntreno" onclick="selObjetivo('entreno')">
-            <div class="opt-card-icon">💪</div>
-            <div class="opt-card-label">Entrenamiento</div>
-            <div class="opt-card-desc">Salud y calidad de vida</div>
-          </div>
-        </div>
+        <h2 class="modal-titulo" id="paso1Titulo">¿Cuál es tu <em>objetivo</em>?</h2>
+        <p class="modal-sub" id="paso1Sub">Cuéntanos qué te trae por aquí y personalizamos tu valoración.</p>
+        <div class="opt-grid-2" id="optGrid"><!-- lo rellena renderPaso1() --></div>
         <div style="height:1.5rem;"></div>
       </div>
 
