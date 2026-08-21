@@ -545,6 +545,19 @@
     }
     .section-eyebrow::before {
       content: ''; width: 28px; height: 1px; background: var(--verde);
+      flex-shrink: 0;
+    }
+    /* En móvil el rótulo quedaba tan fino que no marcaba el cambio de
+       sección. Gana cuerpo y peso, sin llegar a competir con el título. */
+    @media (max-width: 640px) {
+      .section-eyebrow {
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+      }
+      .section-eyebrow::before { width: 24px; height: 3px; border-radius: 2px; }
     }
     .section-title {
       font-family: var(--font-display);
@@ -776,6 +789,19 @@
       transition: gap 0.25s;
     }
     .srv-link:hover { gap: 0.7rem; color: var(--verde-hover); }
+    /* Pedía más presencia: se lee como botón, no como nota al pie */
+    .srv-link {
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em;
+      padding: 0.7rem 1.15rem;
+      margin-left: -1.15rem;
+      border-radius: 2rem;
+      min-height: 44px;
+      transition: background 0.25s ease, color 0.25s ease, gap 0.25s ease;
+    }
+    .srv-link:hover, .srv-link:focus-visible { background: var(--verde-suave); }
+    .srv-card-dark .srv-link:hover { background: rgba(255,255,255,0.1); }
     .srv-card-dark {
       background: var(--gris);
     }
@@ -1113,6 +1139,127 @@
       transition: var(--transition); text-align: center;
     }
     .fmap:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.55); }
+    /* ── Ficha de servicio ── */
+    .srv-flecha { display: inline-block; transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    .srv-link:hover .srv-flecha { transform: translateX(4px); }
+
+    .serv-overlay {
+      position: fixed; inset: 0; z-index: 10050;
+      background: rgba(26,33,40,0.55);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.25rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .serv-overlay.activo { opacity: 1; pointer-events: auto; }
+    .serv-card {
+      position: relative;
+      width: 100%; max-width: 560px;
+      max-height: 88vh;
+      background: var(--blanco);
+      border-radius: 22px; overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 0 28px 70px rgba(26,33,40,0.3);
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.34s cubic-bezier(0.34,1.4,0.64,1);
+    }
+    .serv-overlay.activo .serv-card { transform: none; }
+    .serv-close {
+      position: absolute; top: 0.85rem; right: 0.95rem; z-index: 2;
+      width: 34px; height: 34px; border: none; border-radius: 50%;
+      background: rgba(255,255,255,0.75); color: #6B7280;
+      font-size: 1.3rem; line-height: 1; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .serv-close:hover { background: #fff; color: var(--negro); }
+
+    .serv-head {
+      padding: 1.9rem 1.9rem 1.4rem;
+      background: linear-gradient(135deg, var(--verde-suave) 0%, #F7FBF9 100%);
+      border-bottom: 1px solid rgba(64,75,84,0.07);
+      flex-shrink: 0;
+    }
+    .serv-head .serv-num {
+      font-family: var(--font-display);
+      font-size: 0.95rem; font-weight: 600; letter-spacing: 0.1em;
+      color: var(--verde); display: block; margin-bottom: 0.35rem;
+    }
+    .serv-head h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4.5vw, 1.95rem);
+      font-weight: 400; color: var(--negro); line-height: 1.15;
+    }
+    .serv-head p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; font-weight: 300; color: var(--gris-2);
+      line-height: 1.65; margin-top: 0.6rem;
+    }
+
+    .serv-body {
+      padding: 0.5rem 1.9rem 1.4rem;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      flex: 1;
+    }
+    .serv-item {
+      padding: 1.15rem 0;
+      border-bottom: 1px solid var(--gris-bg2);
+      display: flex; gap: 0.9rem; align-items: flex-start;
+    }
+    .serv-item:last-child { border-bottom: 0; }
+    .serv-item-ico {
+      width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+      background: var(--verde-suave);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .serv-item-txt h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem; font-weight: 500; color: var(--negro);
+      margin-bottom: 3px;
+    }
+    .serv-item-txt p {
+      font-family: var(--font-body);
+      font-size: 0.82rem; font-weight: 300; color: var(--gris-2); line-height: 1.65;
+    }
+    /* Hueco para un vídeo propio dentro de un apartado */
+    .serv-video {
+      margin-top: 0.75rem; border-radius: 12px; overflow: hidden;
+      background: var(--gris-bg); aspect-ratio: 16 / 9;
+    }
+    .serv-video video, .serv-video iframe { width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+
+    .serv-foot {
+      padding: 1.1rem 1.9rem 1.5rem;
+      border-top: 1px solid var(--gris-bg2);
+      flex-shrink: 0; background: var(--blanco);
+    }
+    .serv-cta {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      min-height: 52px; padding: 0.9rem 1.5rem;
+      border-radius: 2rem;
+      background: var(--verde); color: #fff; text-decoration: none;
+      font-family: var(--font-body);
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      box-shadow: 0 6px 20px rgba(97,178,146,0.35);
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .serv-cta:hover { background: var(--verde-hover); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(97,178,146,0.45); }
+    .serv-cta:active { transform: scale(0.98); }
+
+    @media (max-width: 540px) {
+      .serv-card { max-height: 90vh; border-radius: 18px; }
+      .serv-head { padding: 1.6rem 1.35rem 1.2rem; }
+      .serv-body { padding: 0.35rem 1.35rem 1.2rem; }
+      .serv-foot { padding: 1rem 1.35rem 1.3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .serv-overlay, .serv-card, .serv-cta, .srv-flecha { transition: none; }
+    }
+
     /* ── Carrusel de reseñas ── */
     .resenas-wrap { position: relative; margin-top: var(--space-md); }
     .resenas-carrusel {
@@ -1204,11 +1351,11 @@
       background-clip: content-box;
       box-sizing: content-box;
       border: 0; padding: 10px 7px; cursor: pointer;
-      transition: background 0.25s ease, transform 0.25s ease, width 0.25s ease;
+      transition: background 0.2s, transform 0.2s;
       -webkit-tap-highlight-color: transparent;
     }
     .res-dot:hover { background: var(--verde); }
-    .res-dot.active { background: var(--verde); width: 22px; border-radius: 4px; }
+    .res-dot.active { background: var(--verde); transform: scale(1.3); }
 
     /* ── Enlace a todas las reseñas ── */
     .resenas-pie { display: flex; justify-content: center; margin-top: 1.75rem; }
@@ -2634,21 +2781,21 @@
         <div class="srv-num">01</div>
         <h3>Fisioterapia Clínica</h3>
         <p>Razonamiento y tratamiento para dolores de espalda, cervicales, articulaciones y lesiones musculares.</p>
-        <a href="#" class="srv-link">Más información →</a>
+        <a href="#" class="srv-link" onclick="abrirServicio('fisio');return false;">Más información <span class="srv-flecha" aria-hidden="true">→</span></a>
       </div>
 
       <div class="srv-card fu d2">
         <div class="srv-num">02</div>
-        <h3>Rehabilitación Deportiva</h3>
-        <p>Recuperación de lesiones deportivas, post-cirugía y readaptación al entrenamiento. Vuelve más fuerte.</p>
-        <a href="#" class="srv-link">Más información →</a>
+        <h3>Rehabilitación</h3>
+        <p>Recuperación tras un ictus, una cirugía o una lesión deportiva. Un plan progresivo hasta volver a tu vida.</p>
+        <a href="#" class="srv-link" onclick="abrirServicio('rehab');return false;">Más información <span class="srv-flecha" aria-hidden="true">→</span></a>
       </div>
 
       <div class="srv-card fu d3">
         <div class="srv-num">03</div>
         <h3>Entrenamiento Personal en Grupos Reducidos</h3>
         <p>Programas de fuerza, movilidad y salud guiados por fisioterapeutas y entrenadores con visión clínica.</p>
-        <a href="#" class="srv-link">Más información →</a>
+        <a href="#" class="srv-link" onclick="abrirServicio('entreno');return false;">Más información <span class="srv-flecha" aria-hidden="true">→</span></a>
       </div>
 
 
@@ -2663,6 +2810,22 @@
     </div>
   </div>
 </section>
+
+<!-- ████████ FICHA DE SERVICIO ████████ -->
+<div class="serv-overlay" id="servOverlay" onclick="cerrarServicioSiFondo(event)">
+  <div class="serv-card" role="dialog" aria-modal="true" aria-labelledby="servTitulo">
+    <button class="serv-close" type="button" onclick="cerrarServicio()" aria-label="Cerrar">×</button>
+    <div class="serv-head">
+      <span class="serv-num" id="servNum">01</span>
+      <h3 id="servTitulo">Servicio</h3>
+      <p id="servIntro"></p>
+    </div>
+    <div class="serv-body" id="servBody"></div>
+    <div class="serv-foot">
+      <a href="#" class="serv-cta" id="servCta" onclick="return desdeServicioAlFormulario(event);">Pedir valoración</a>
+    </div>
+  </div>
+</div>
 
 <!-- ████████ TESTIMONIOS ████████ -->
 <section class="section testimonios" id="testimonios">
@@ -3534,6 +3697,115 @@
 
 
   // ═══════════════════════════════════════════════════
+  //   FICHAS DE SERVICIO
+  //   ────────────────────────────────────────────────
+  //   Textos pendientes de revisión clínica.
+  //   Para meter un vídeo propio en un apartado, añádele
+  //   video: 'video/terapia-manual.mp4' y sale bajo el texto.
+  // ═══════════════════════════════════════════════════
+  var SERVICIOS = {
+    fisio: {
+      num: '01',
+      titulo: 'Fisioterapia Clínica',
+      intro: 'Valoramos de dónde viene tu dolor antes de tratarlo. Cada técnica se elige por un motivo, no por costumbre.',
+      objetivo: 'fisio',
+      items: [
+        { ico: '🖐️', nombre: 'Terapia manual',
+          texto: 'Tratamiento con las manos sobre articulaciones, músculos y tejidos para devolver movilidad y bajar el dolor.' },
+        { ico: '🔎', nombre: 'Ecografía',
+          texto: 'Ecografía musculoesquelética para ver en directo el estado del tejido y afinar el diagnóstico.' },
+        { ico: '🎯', nombre: 'Tratamiento ecoguiado',
+          texto: 'Técnicas aplicadas con control ecográfico en tiempo real, para llegar al punto exacto con precisión.' },
+        { ico: '⚡', nombre: 'Ondas de choque',
+          texto: 'Estímulo mecánico de alta energía, indicado sobre todo en tendinopatías y dolores que se resisten.' }
+      ]
+    },
+    rehab: {
+      num: '02',
+      titulo: 'Rehabilitación',
+      intro: 'Recuperar la función después de algo serio. Progresión medida, sin saltarse pasos y sin quedarse corto.',
+      objetivo: 'fisio',
+      items: [
+        { ico: '🧠', nombre: 'Ictus',
+          texto: 'Trabajo de movilidad, equilibrio y autonomía tras un accidente cerebrovascular.' },
+        { ico: '❤️', nombre: 'Patologías cardíacas',
+          texto: 'Ejercicio pautado y supervisado para personas con una condición del corazón, con control de la intensidad.' },
+        { ico: '🩹', nombre: 'Rehabilitación post quirúrgica',
+          texto: 'Plan progresivo desde el alta hospitalaria hasta recuperar tu actividad habitual.' },
+        { ico: '🏃', nombre: 'Readaptación deportiva',
+          texto: 'El puente entre la lesión ya curada y volver a entrenar o competir con confianza.' }
+      ]
+    },
+    entreno: {
+      num: '03',
+      titulo: 'Entrenamiento Personal en Grupos Reducidos',
+      intro: 'Grupos pequeños, con fisioterapeutas y entrenadores encima de cada ejercicio. Fuerza con criterio clínico.',
+      objetivo: 'entreno',
+      items: [
+        { ico: '🏋️', nombre: 'Entrenamiento de fuerza',
+          texto: 'La base de todo lo demás: cargas progresivas y técnica cuidada, adaptadas a tu punto de partida.' },
+        { ico: '🦴', nombre: 'Osteoporosis',
+          texto: 'Trabajo de impacto y fuerza pautado para estimular el hueso de forma segura.' },
+        { ico: '🦵', nombre: 'Artrosis',
+          texto: 'Movimiento dosificado para mantener la articulación funcional y reducir las molestias del día a día.' },
+        { ico: '🧘', nombre: 'Ejercicio terapéutico',
+          texto: 'Ejercicio prescrito como tratamiento, con un objetivo clínico concreto detrás de cada sesión.' }
+      ]
+    }
+  };
+
+  var _servicioActual = null;
+
+  function abrirServicio(clave) {
+    var d = SERVICIOS[clave];
+    if (!d) return;
+    _servicioActual = d;
+
+    document.getElementById('servNum').textContent = d.num;
+    document.getElementById('servTitulo').textContent = d.titulo;
+    document.getElementById('servIntro').textContent = d.intro;
+
+    document.getElementById('servBody').innerHTML = d.items.map(function(it){
+      return '<div class="serv-item">'
+           +   '<span class="serv-item-ico" aria-hidden="true">' + escHTML(it.ico) + '</span>'
+           +   '<div class="serv-item-txt">'
+           +     '<h4>' + escHTML(it.nombre) + '</h4>'
+           +     '<p>' + escHTML(it.texto) + '</p>'
+           +     (it.video
+                  ? '<div class="serv-video"><video src="' + escHTML(it.video) + '" controls playsinline preload="none"></video></div>'
+                  : '')
+           +   '</div>'
+           + '</div>';
+    }).join('');
+
+    cerrarMenu();
+    document.getElementById('servOverlay').classList.add('activo');
+    document.body.classList.add('modal-abierto');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarServicio() {
+    document.getElementById('servOverlay').classList.remove('activo');
+    if (!document.getElementById('modalOverlay').classList.contains('activo')) {
+      document.body.classList.remove('modal-abierto');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function cerrarServicioSiFondo(e) {
+    if (e.target === document.getElementById('servOverlay')) cerrarServicio();
+  }
+
+  // Del detalle del servicio al formulario, con el perfil ya elegido
+  function desdeServicioAlFormulario(e) {
+    if (e) e.preventDefault();
+    var objetivo = _servicioActual ? _servicioActual.objetivo : null;
+    cerrarServicio();
+    setTimeout(function(){ abrirModal(objetivo); }, 180);
+    return false;
+  }
+
+  // ═══════════════════════════════════════════════════
   //   RESEÑAS DE GOOGLE
   //   ────────────────────────────────────────────────
   //   Hay dos formas de rellenarlas. Con la lista vacía
@@ -4085,7 +4357,7 @@
 
   // ESC key close
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') { cerrarModal(); cerrarWA(); cerrarLlamada(); cerrarMenu(); }
+    if (e.key === 'Escape') { cerrarModal(); cerrarWA(); cerrarLlamada(); cerrarMenu(); cerrarServicio(); }
   });
 
 </script>
