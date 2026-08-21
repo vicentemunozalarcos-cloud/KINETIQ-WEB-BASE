@@ -520,8 +520,20 @@
     /* ══════════════════════════
        SHARED SECTION STYLES
     ══════════════════════════ */
-    .section { padding: var(--space-xl) 2rem; }
+    /* 7rem arriba y abajo dejaban 224px entre el contenido de dos
+       secciones seguidas. 6rem mantiene el aire sin que se descuelguen. */
+    .section { padding: 6rem 2rem; }
     .section-sm { padding: var(--space-lg) 2rem; }
+    /* En pantallas medianas y móviles el aire vertical se reduce:
+       112px arriba + 112px abajo dejaban huecos enormes entre secciones. */
+    @media (max-width: 900px) {
+      .section    { padding: 4.5rem 2rem; }
+      .section-sm { padding: 3rem 2rem; }
+    }
+    @media (max-width: 640px) {
+      .section    { padding: 3.5rem 1.5rem; }
+      .section-sm { padding: 2.5rem 1.5rem; }
+    }
     .mc { max-width: 1200px; margin: 0 auto; }
 
     .section-eyebrow {
@@ -1439,7 +1451,11 @@
     }
 
     /* ── YouTube embed ── */
-    .yt-block { margin-bottom: 5rem; }
+    /* El bloque de YouTube va después del de Instagram: necesita aire
+       por arriba para no pegarse al botón, y ninguno por abajo porque
+       ya cierra la sección. */
+    .yt-block { margin-top: 4.5rem; margin-bottom: 0; }
+    @media (max-width: 640px) { .yt-block { margin-top: 3.25rem; } }
     .yt-block-label {
       display: flex; align-items: center; gap: 0.75rem;
       font-family: var(--font-body);
@@ -1728,6 +1744,20 @@
       box-shadow: 0 8px 24px rgba(97,178,146,0.15);
     }
     .ig-cta-btn:hover svg { color: var(--verde); }
+    /* En móvil el texto se partía en dos líneas y el botón se hinchaba.
+       Se aprieta la tipografía para que quepa en una sola. */
+    @media (max-width: 640px) {
+      .ig-cta-btn {
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        padding: 0.95rem 1.25rem;
+        gap: 0.5rem;
+        white-space: nowrap;
+      }
+    }
+    @media (max-width: 360px) {
+      .ig-cta-btn { font-size: 0.62rem; letter-spacing: 0.02em; padding: 0.9rem 1rem; }
+    }
 
     /* Mobile carousel dots */
     .ig-dots {
