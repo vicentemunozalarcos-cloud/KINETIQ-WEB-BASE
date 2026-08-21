@@ -774,7 +774,7 @@
 
     /* Icono animado de cada servicio. Ciclos largos y amplitudes
        pequeñas: se percibe el movimiento sin que distraiga al leer. */
-    .srv-ico { width: 46px; height: 46px; color: var(--verde); display: block; overflow: visible; }
+    .srv-ico { width: 54px; height: 54px; color: var(--verde); display: block; overflow: visible; }
     .srv-card-dark .srv-ico { color: rgba(255,255,255,0.5); }
 
     /* 01 · columna */
@@ -804,29 +804,46 @@
     .i3-disco  { animation: i3Disco 3.2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
     .i3-chispa { animation: i3Chispa 3.2s ease-out infinite; }
 
-    /* 04 · nutrición */
-    @keyframes i4Fruta  { 0%,100% { transform:scale(1) } 50% { transform:scale(1.05) } }
-    @keyframes i4Hoja   { 0%,100% { transform:rotate(0deg) } 30% { transform:rotate(-11deg) } 65% { transform:rotate(5deg) } }
-    @keyframes i4Brillo { 0%,55% { opacity:0; transform:scale(.5) } 70% { opacity:.9; transform:scale(1) } 100% { opacity:0; transform:scale(1.2) } }
-    .i4-fruta  { animation: i4Fruta 3.6s ease-in-out infinite; transform-origin: 24px 30px; }
-    .i4-hoja   { animation: i4Hoja 3.6s ease-in-out infinite; transform-origin: 24px 12px; }
-    .i4-brillo { animation: i4Brillo 3.6s ease-out infinite; transform-origin: 38px 24px; }
+    /* 04 · nutrición: la manzana se traza, brota la hoja,
+       un reflejo la recorre y saltan dos destellos alternos */
+    @keyframes i4Linea   { 0% { stroke-dashoffset:96 } 40%,100% { stroke-dashoffset:0 } }
+    @keyframes i4Tallo   { 0%,22% { stroke-dashoffset:8 } 42%,100% { stroke-dashoffset:0 } }
+    @keyframes i4Hoja    { 0%,30% { opacity:0; transform:scale(.3) rotate(-28deg) }
+                           50% { opacity:1; transform:scale(1.08) rotate(4deg) }
+                           60% { transform:scale(1) rotate(0deg) }
+                           82% { transform:scale(1) rotate(-7deg) }
+                           100% { opacity:1; transform:scale(1) rotate(0deg) } }
+    @keyframes i4Fruta   { 0%,45% { transform:scale(1) } 62% { transform:scale(1.06) } 80%,100% { transform:scale(1) } }
+    @keyframes i4Reflejo { 0%,45% { transform:translateX(-26px); opacity:0 }
+                           60% { opacity:.16 }
+                           88%,100% { transform:translateX(30px); opacity:0 } }
+    @keyframes i4Chispa  { 0%,58% { opacity:0; transform:scale(.4) }
+                           70% { opacity:.95; transform:scale(1.1) }
+                           84%,100% { opacity:0; transform:scale(1.3) } }
+    .i4-linea   { animation: i4Linea 4.4s ease-in-out infinite; }
+    .i4-tallo   { animation: i4Tallo 4.4s ease-in-out infinite; }
+    .i4-hoja    { animation: i4Hoja 4.4s cubic-bezier(0.34,1.56,0.64,1) infinite; transform-origin: 24px 12px; }
+    .i4-fruta   { animation: i4Fruta 4.4s ease-in-out infinite; transform-origin: 24px 30px; }
+    .i4-reflejo { animation: i4Reflejo 4.4s ease-in-out infinite; }
+    .i4-chispa  { animation: i4Chispa 4.4s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+    .i4-c2      { animation-delay: .5s; }
 
     /* En móvil las tarjetas son anchas: el icono puede crecer */
     @media (max-width: 540px) {
-      .srv-ico { width: 60px; height: 60px; }
+      .srv-ico { width: 72px; height: 72px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .srv-ico * { animation: none !important; }
       .i2-traza { stroke-dashoffset: 0; }
-      .i2-punta, .i2-escalon, .i3-chispa, .i4-brillo { opacity: 1; }
+      .i2-punta, .i2-escalon, .i3-chispa, .i4-chispa, .i4-hoja { opacity: 1; }
+      .i4-linea, .i4-tallo { stroke-dashoffset: 0; }
     }
 
     /* El número y el título dejan sitio al icono */
-    .srv-card h3 { padding-right: 3.5rem; }
+    .srv-card h3 { padding-right: 4.25rem; }
     @media (max-width: 540px) {
       .srv-ico-wrap { top: 1.7rem; right: 1.7rem; }
-      .srv-card h3 { padding-right: 4.75rem; }
+      .srv-card h3 { padding-right: 5.5rem; }
     }
 
     .srv-num {
@@ -837,7 +854,7 @@
     }
     .srv-card h3 {
       font-family: var(--font-display);
-      font-size: 1.3rem; font-weight: 500;
+      font-size: 1.32rem; font-weight: 700;
       color: var(--negro); margin-bottom: 0.7rem;
     }
     .srv-card p {
@@ -2076,7 +2093,7 @@
       border: 0.5px solid rgba(255,255,255,0.22);
     }
     .team-info { padding: 1.1rem; }
-    .team-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 500; color: var(--negro); margin-bottom: 2px; }
+    .team-name { font-family: var(--font-display); font-size: 1.12rem; font-weight: 700; color: var(--negro); margin-bottom: 2px; }
     .team-role { font-family: var(--font-body); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--verde); margin-bottom: 0.65rem; }
     .team-tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .team-tag {
@@ -2871,7 +2888,7 @@
 
 
       <div class="srv-card fu d3">
-        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"> <g class="i4-fruta" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M24 16c-3-2.8-7.7-2.8-10.6 0S10 26 13 31s7.7 11 11 11 8-6 11-11 3.3-12.2.6-15-7.6-2.8-10.6 0z"/> <path d="M24 16V9" class="i4-tallo"/> </g> <path class="i4-hoja" d="M24 12.5c3.6-4.8 8.6-4 9.6-3.8.2 1-.2 6-5 7-1.9.4-3.7-.2-4.6-3.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/> <g class="i4-brillo" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M38 22v4"/><path d="M36 24h4"/> </g> </svg></span>
+        <span class="srv-ico-wrap" aria-hidden="true"><svg class="srv-ico" viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="i4-recorte"><path d="M24 16c-3-2.8-7.7-2.8-10.6 0S10 26 13 31s7.7 11 11 11 8-6 11-11 3.3-12.2.6-15-7.6-2.8-10.6 0z"/></clipPath></defs><g class="i4-fruta"><path class="i4-linea" d="M24 16c-3-2.8-7.7-2.8-10.6 0S10 26 13 31s7.7 11 11 11 8-6 11-11 3.3-12.2.6-15-7.6-2.8-10.6 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-dasharray="96" stroke-dashoffset="96"/><g clip-path="url(#i4-recorte)"><path class="i4-reflejo" d="M4 40L20 8" fill="none" stroke="currentColor" stroke-width="7" opacity="0.16" stroke-linecap="round"/></g><path class="i4-tallo" d="M24 16V9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="8" stroke-dashoffset="8"/></g><path class="i4-hoja" d="M24 12.5c3.6-4.8 8.6-4 9.6-3.8.2 1-.2 6-5 7-1.9.4-3.7-.2-4.6-3.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><g class="i4-chispa i4-c1"><path d="M39 20v4.5"/><path d="M36.75 22.25h4.5"/></g><g class="i4-chispa i4-c2"><path d="M8.5 15v3.4"/><path d="M6.8 16.7h3.4"/></g></g></svg></span>
         <div class="srv-num">04</div>
         <h3>Nutrición</h3>
         <p>Pautas realistas adaptadas a tu vida, a tu entrenamiento y a tu situación clínica.</p>
