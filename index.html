@@ -4246,8 +4246,22 @@
                  /2g/.test(navigator.connection.effectiveType || ''));
     if (reduce || ahorro) return;
 
-    v.src = HERO_VIDEO;
-    v.load();
+    // El vídeo pesa: no se descarga hasta que la página está tranquila
+    // y el hero se está viendo de verdad.
+    function cargarVideo() {
+      if (v.src) return;
+      v.src = HERO_VIDEO;
+      v.load();
+    }
+    function cuandoTocaCargar() {
+      if (!('IntersectionObserver' in window)) { cargarVideo(); return; }
+      var io2 = new IntersectionObserver(function(entradas){
+        if (entradas[0].isIntersecting) { cargarVideo(); io2.disconnect(); }
+      }, { threshold: 0.1 });
+      io2.observe(media);
+    }
+    if (window.requestIdleCallback) requestIdleCallback(cuandoTocaCargar, { timeout: 2500 });
+    else setTimeout(cuandoTocaCargar, 1200);
 
     // Sólo se enseña cuando ya está reproduciendo: nada de recuadros negros
     v.addEventListener('playing', function(){ media.classList.add('reproduciendo'); });
@@ -4267,8 +4281,8 @@
         document.addEventListener('click', reintenta, { once: true });
       });
     }
+    v.addEventListener('loadeddata', arrancar, { once: true });
     if (v.readyState >= 2) arrancar();
-    else v.addEventListener('loadeddata', arrancar, { once: true });
 
     // Con la pestaña en segundo plano no tiene sentido gastar batería
     document.addEventListener('visibilitychange', function(){
