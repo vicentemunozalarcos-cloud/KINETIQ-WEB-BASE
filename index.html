@@ -1349,6 +1349,90 @@
     /* Con un número impar de opciones, la última ocupa el ancho entero */
     .opt-grid-2 > .opt-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
+    /* ── Consentimiento de datos de salud ── */
+    .rgpd-check { display: flex; align-items: flex-start; gap: 0.7rem; margin-top: 0.35rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .rgpd-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .rgpd-marca { width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px; border: 1.5px solid #D5DBD8; border-radius: 6px; background: #fff; position: relative; transition: background 0.2s, border-color 0.2s; }
+    .rgpd-marca::after { content: ''; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) scale(0); transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+    .rgpd-check input:checked ~ .rgpd-marca { background: var(--verde); border-color: var(--verde); }
+    .rgpd-check input:checked ~ .rgpd-marca::after { transform: rotate(45deg) scale(1); }
+    .rgpd-check input:focus-visible ~ .rgpd-marca { box-shadow: 0 0 0 3px rgba(97,178,146,0.25); }
+    .rgpd-txt { font-family: 'Jost', sans-serif; font-size: 0.73rem; font-weight: 300; line-height: 1.55; color: #6B7280; }
+    .rgpd-txt a { color: var(--verde-hover); text-underline-offset: 2px; }
+
+    /* ── Mapa a la espera de permiso ── */
+    .mapa-bloqueado {
+      position: absolute; inset: 0; z-index: 2;
+      background: var(--gris-bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.6rem; padding: 1.25rem; text-align: center;
+      color: var(--gris-3);
+    }
+    .mapa-bloqueado svg { width: 26px; height: 26px; color: var(--verde); opacity: 0.7; }
+    .mapa-bloqueado p {
+      font-family: var(--font-body);
+      font-size: 0.74rem; font-weight: 300; line-height: 1.5;
+      max-width: 24ch;
+    }
+    .mapa-permitir {
+      font-family: var(--font-body);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--verde-hover); background: var(--verde-suave);
+      border: 1px solid rgba(97,178,146,0.35);
+      padding: 0.55rem 1.1rem; border-radius: 2rem;
+      min-height: 40px; cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mapa-permitir:hover { background: var(--verde); color: #fff; }
+    .mapas-ok .mapa-bloqueado { display: none; }
+
+    /* ── Aviso de cookies ── */
+    .ck-aviso {
+      position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 10070;
+      background: var(--blanco);
+      border: 1px solid var(--gris-bg2);
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(26,33,40,0.22);
+      padding: 1.15rem 1.35rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.25rem; flex-wrap: wrap;
+      max-width: 780px; margin: 0 auto;
+      transform: translateY(140%);
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+    }
+    .ck-aviso.visible { transform: translateY(0); }
+    .ck-txt {
+      font-family: var(--font-body);
+      font-size: 0.8rem; font-weight: 300; line-height: 1.6;
+      color: var(--gris-2); flex: 1; min-width: 240px;
+    }
+    .ck-txt strong { font-weight: 600; color: var(--negro); }
+    .ck-txt a { color: var(--verde-hover); text-underline-offset: 2px; }
+    .ck-botones { display: flex; gap: 0.6rem; flex-shrink: 0; }
+    .ck-btn {
+      font-family: var(--font-body);
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.75rem 1.35rem; border-radius: 2rem;
+      min-height: 44px; cursor: pointer;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ck-btn--no { background: var(--gris-bg); color: var(--gris-2); border: 1px solid var(--gris-bg2); }
+    .ck-btn--no:hover { background: var(--gris-bg2); }
+    .ck-btn--si { background: var(--verde); color: #fff; border: 1px solid var(--verde);
+                  box-shadow: 0 5px 16px rgba(97,178,146,0.32); }
+    .ck-btn--si:hover { background: var(--verde-hover); }
+    @media (max-width: 640px) {
+      .ck-aviso { left: 0.75rem; right: 0.75rem; bottom: 5.5rem; padding: 1rem 1.1rem; }
+      .ck-botones { width: 100%; }
+      .ck-btn { flex: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ck-aviso { transition: none; } }
+
     /* ── Carrusel de reseñas ── */
     .resenas-wrap { position: relative; margin-top: var(--space-md); }
     .resenas-carrusel {
@@ -2911,6 +2995,19 @@
   </div>
 </section>
 
+<!-- ████████ AVISO DE COOKIES ████████ -->
+<div class="ck-aviso" id="ckAviso" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
+  <div class="ck-txt">
+    <strong>Esta web no usa cookies propias.</strong>
+    Solo los mapas de Google instalan cookies de terceros, y no se cargan hasta que tú lo autorices.
+    <a href="cookies.html">Más información</a>
+  </div>
+  <div class="ck-botones">
+    <button type="button" class="ck-btn ck-btn--no" onclick="rechazarCookies()">Rechazar</button>
+    <button type="button" class="ck-btn ck-btn--si" onclick="aceptarCookies()">Aceptar</button>
+  </div>
+</div>
+
 <!-- ████████ FICHA DE SERVICIO ████████ -->
 <div class="serv-overlay" id="servOverlay" onclick="cerrarServicioSiFondo(event)">
   <div class="serv-card" role="dialog" aria-modal="true" aria-labelledby="servTitulo">
@@ -3037,8 +3134,13 @@
         <div class="mapas-grid">
         <article class="mapa-card">
           <div class="mapa-lienzo">
+            <div class="mapa-bloqueado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <p>El mapa de Google necesita tu permiso para cargarse.</p>
+              <button type="button" class="mapa-permitir" onclick="aceptarCookies()">Ver el mapa</button>
+            </div>
             <iframe
-              src="https://www.google.com/maps?q=39.4679711,-0.3838009(Kinetiq+Gran+V%C3%ADa)&amp;z=17&amp;output=embed&amp;hl=es"
+              data-src="https://www.google.com/maps?q=39.4679711,-0.3838009(Kinetiq+Gran+V%C3%ADa)&amp;z=17&amp;output=embed&amp;hl=es"
               title="Mapa de Kinetiq Gran Vía"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -3056,8 +3158,13 @@
         </article>
         <article class="mapa-card">
           <div class="mapa-lienzo">
+            <div class="mapa-bloqueado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <p>El mapa de Google necesita tu permiso para cargarse.</p>
+              <button type="button" class="mapa-permitir" onclick="aceptarCookies()">Ver el mapa</button>
+            </div>
             <iframe
-              src="https://www.google.com/maps?q=39.4647602,-0.3659168(Kinetiq+C%C3%A1novas)&amp;z=17&amp;output=embed&amp;hl=es"
+              data-src="https://www.google.com/maps?q=39.4647602,-0.3659168(Kinetiq+C%C3%A1novas)&amp;z=17&amp;output=embed&amp;hl=es"
               title="Mapa de Kinetiq Cánovas"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -3077,7 +3184,7 @@
       </div>
   <div class="footer-bottom">
     <span>© 2025 Kinetiq Ejercicio y Recuperación · Valencia</span>
-    <span><a href="#">Privacidad</a> · <a href="#">Aviso legal</a> · <a href="#">Cookies</a></span>
+    <span><a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a> · <a href="cookies.html">Cookies</a> · <a href="#" onclick="abrirCookies();return false;">Configurar cookies</a></span>
   </div>
 </footer>
 
@@ -3631,7 +3738,7 @@
       nav.innerHTML = volver + '<button class="btn-modal-next" onclick="irPaso(' + (paso+1) + ')">Continuar →</button>';
     } else {
       nav.innerHTML = volver
-                    + '<button class="btn-modal-next" id="btnEnviar"' + (_centro ? '' : ' disabled')
+                    + '<button class="btn-modal-next" id="btnEnviar"' + ((_centro && consentimientoDado()) ? '' : ' disabled')
                     + ' onclick="finalizarFormulario()">' + textoBotonEnviar() + '</button>';
     }
   }
@@ -3701,6 +3808,8 @@
     ['selTiempo','inputDeporte','inputNombre','inputTel'].forEach(function(id){
       var el = document.getElementById(id); if(el) el.value='';
     });
+    var rg = document.getElementById('inputRgpd');
+    if (rg) { rg.checked = false; rg.closest('.rgpd-check').querySelector('.rgpd-marca').style.borderColor = ''; }
   }
 
   function pintarProgreso(n) {
@@ -3764,10 +3873,23 @@
   }
 
   // ── Selección de centro (paso 3) ──
+  // Enviar exige centro elegido y consentimiento marcado
+  function consentimientoDado() {
+    var c = document.getElementById('inputRgpd');
+    return !!(c && c.checked);
+  }
+  function revisarEnvio() {
+    var b = document.getElementById('btnEnviar');
+    if (!b) return;
+    b.disabled = !(_centro && consentimientoDado());
+    b.innerHTML = textoBotonEnviar();
+  }
+
   function selCentro(el, id) {
     _centro = id;
     document.querySelectorAll('.centro-btn').forEach(function(b){ b.classList.remove('sel'); });
     el.classList.add('sel');
+    revisarEnvio();
 
     var c = CENTROS[id];
     var hint = document.getElementById('centroHint');
@@ -3776,11 +3898,13 @@
       hint.textContent = 'Enviaremos tu solicitud al WhatsApp de ' + c.nombre + ' (' + c.tel + ').';
     }
     var btn = document.getElementById('btnEnviar');
-    if (btn) { btn.disabled = false; btn.innerHTML = textoBotonEnviar(); }
+    if (btn) btn.innerHTML = textoBotonEnviar();
+    revisarEnvio();
   }
 
   function textoBotonEnviar() {
     if (!_centro) return 'Elige un centro';
+    if (!consentimientoDado()) return 'Marca la casilla';
     return 'Enviar a ' + CENTROS[_centro].nombre + ' 💬';
   }
 
@@ -3794,6 +3918,16 @@
       }
       var grid = document.querySelector('.centro-grid');
       if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!consentimientoDado()) {
+      var cc = document.getElementById('inputRgpd');
+      if (cc) {
+        var caja = cc.closest('.rgpd-check');
+        caja.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        caja.querySelector('.rgpd-marca').style.borderColor = '#D97706';
+      }
       return;
     }
 
@@ -4196,6 +4330,53 @@
 
   cargarResenas();
 
+
+  // ═══════════════════════════════════════════════════
+  //   COOKIES — los mapas de Google no cargan sin permiso
+  //   ────────────────────────────────────────────────
+  //   Esta web no pone cookies propias. Lo único que las
+  //   instala es el mapa incrustado de Google, así que se
+  //   mantiene bloqueado hasta que la persona decide.
+  //   La decisión se guarda en el propio navegador.
+  // ═══════════════════════════════════════════════════
+  var CK_CLAVE = 'kinetiq-cookies';
+
+  function ckGuardado() {
+    try { return localStorage.getItem(CK_CLAVE); } catch (e) { return null; }
+  }
+  function ckGuardar(valor) {
+    try { localStorage.setItem(CK_CLAVE, valor); } catch (e) {}
+  }
+
+  function cargarMapas() {
+    document.querySelectorAll('.mapa-lienzo iframe[data-src]').forEach(function(f){
+      f.src = f.getAttribute('data-src');
+      f.removeAttribute('data-src');
+    });
+    document.body.classList.add('mapas-ok');
+  }
+
+  function mostrarAviso(mostrar) {
+    var a = document.getElementById('ckAviso');
+    if (!a) return;
+    if (mostrar) {
+      a.hidden = false;
+      requestAnimationFrame(function(){ a.classList.add('visible'); });
+    } else {
+      a.classList.remove('visible');
+      setTimeout(function(){ a.hidden = true; }, 450);
+    }
+  }
+
+  function aceptarCookies() { ckGuardar('si'); cargarMapas(); mostrarAviso(false); }
+  function rechazarCookies() { ckGuardar('no'); mostrarAviso(false); }
+  function abrirCookies() { mostrarAviso(true); }
+
+  (function(){
+    var d = ckGuardado();
+    if (d === 'si') cargarMapas();
+    else if (d !== 'no') setTimeout(function(){ mostrarAviso(true); }, 1200);
+  })();
 
   // ═══════════════════════════════════════════════════
   //   VÍDEO DE AMBIENTE DEL HERO
@@ -5076,6 +5257,12 @@
         <input class="modal-input" id="inputNombre" type="text" placeholder="Nombre y apellido..." autocomplete="name"/>
         <label class="input-label">Tu teléfono</label>
         <input class="modal-input" id="inputTel" type="tel" placeholder="+34 6XX XXX XXX" autocomplete="tel" inputmode="numeric"/>
+
+        <label class="rgpd-check" for="inputRgpd">
+          <input type="checkbox" id="inputRgpd" onchange="revisarEnvio()"/>
+          <span class="rgpd-marca" aria-hidden="true"></span>
+          <span class="rgpd-txt">He leído y acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>, y autorizo el tratamiento de los datos de salud que facilito para preparar mi valoración.</span>
+        </label>
 
         <label class="input-label" style="margin-top:0.5rem;">¿En qué centro prefieres tu cita?</label>
         <div class="centro-grid">
