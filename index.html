@@ -1427,7 +1427,7 @@
                   box-shadow: 0 5px 16px rgba(97,178,146,0.32); }
     .ck-btn--si:hover { background: var(--verde-hover); }
     @media (max-width: 640px) {
-      .ck-aviso { left: 0.75rem; right: 0.75rem; bottom: 5.5rem; padding: 1rem 1.1rem; }
+      .ck-aviso { left: 0.75rem; right: 0.75rem; bottom: 7rem; padding: 1rem 1.1rem; }
       .ck-botones { width: 100%; }
       .ck-btn { flex: 1; }
     }
@@ -3478,9 +3478,9 @@
     <button class="call-close" onclick="cerrarLlamada()" aria-label="Cerrar">×</button>
     <div class="call-head">
       <h3 id="callTitle">¿A qué centro <em>llamamos</em>?</h3>
-      <p>Lun–Vie 8:00–21:00 · Sáb 9:00–12:00</p>
+      <p id="callSub">Lun–Vie 8:00–21:00 · Sáb 9:00–12:00</p>
     </div>
-    <a class="wa-opt" href="tel:+34643721677">
+    <a class="wa-opt" id="opt-34643721677" href="tel:+34643721677">
       <span class="wa-opt-ico">📞</span>
       <span class="wa-opt-txt">
         <span class="wa-opt-name">Centro Gran Vía</span>
@@ -3489,7 +3489,7 @@
       </span>
       <span class="wa-opt-go">→</span>
     </a>
-    <a class="wa-opt" href="tel:+34614745155">
+    <a class="wa-opt" id="opt-34614745155" href="tel:+34614745155">
       <span class="wa-opt-ico">📞</span>
       <span class="wa-opt-txt">
         <span class="wa-opt-name">Centro Cánovas</span>
@@ -4002,13 +4002,39 @@
     });
   }
   // ── Selector de centro para llamar por teléfono ──
-  function abrirLlamada(e) {
+  // Un solo diálogo para las dos vías de contacto
+  var WA_TEXTO = 'Hola, me gustaría pedir cita o información.';
+
+  function abrirContacto(modo, e) {
     if (e) e.preventDefault();
-    cerrarMenu();
+    cerrarMenu(); cerrarWA();
+    var esWA = (modo === 'whatsapp');
+    document.getElementById('callTitle').innerHTML = esWA
+      ? '¿A qué centro <em>escribimos</em>?'
+      : '¿A qué centro <em>llamamos</em>?';
+    document.getElementById('callSub').textContent = esWA
+      ? 'Te respondemos por WhatsApp lo antes posible.'
+      : 'Lun–Vie 8:00–21:00 · Sáb 9:00–12:00';
+
+    Object.keys(CENTROS).forEach(function(k){
+      var c = CENTROS[k];
+      var a = document.getElementById('opt-' + c.wa);
+      if (!a) return;
+      a.href = esWA
+        ? 'https://wa.me/' + c.wa + '?text=' + encodeURIComponent(WA_TEXTO)
+        : 'tel:+' + c.wa;
+      if (esWA) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+      else { a.removeAttribute('target'); a.removeAttribute('rel'); }
+      a.querySelector('.wa-opt-ico').textContent = esWA ? '💬' : '📞';
+    });
+
     document.getElementById('callOverlay').classList.add('activo');
     document.body.classList.add('modal-abierto');
     return false;
   }
+
+  function abrirLlamada(e)  { return abrirContacto('llamar', e); }
+  function abrirWhatsApp(e) { return abrirContacto('whatsapp', e); }
   function cerrarLlamada() {
     document.getElementById('callOverlay').classList.remove('activo');
     if (!document.getElementById('modalOverlay').classList.contains('activo')) {
@@ -4020,15 +4046,6 @@
   }
 
   // Abre el selector de centro desde cualquier botón "WhatsApp" de la página
-  function abrirWhatsApp(e) {
-    if (e) e.preventDefault();
-    var f = document.getElementById('waFloat');
-    if (!f) return false;
-    f.classList.add('open');
-    document.getElementById('waTrigger').setAttribute('aria-expanded', 'true');
-    f.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    return false;
-  }
 
 
   // ═══════════════════════════════════════════════════
@@ -4356,9 +4373,21 @@
     document.body.classList.add('mapas-ok');
   }
 
+  // La barra fija de "Pedir cita" cambia de alto según el móvil:
+  // el aviso se coloca justo por encima, medido, no a ojo.
+  function colocarAviso() {
+    var a = document.getElementById('ckAviso');
+    var barra = document.querySelector('.sticky-mob');
+    if (!a || !barra) return;
+    if (getComputedStyle(barra).display === 'none') { a.style.bottom = ''; return; }
+    a.style.bottom = Math.round(barra.getBoundingClientRect().height + 14) + 'px';
+  }
+  window.addEventListener('resize', colocarAviso, { passive: true });
+
   function mostrarAviso(mostrar) {
     var a = document.getElementById('ckAviso');
     if (!a) return;
+    if (mostrar) colocarAviso();
     if (mostrar) {
       a.hidden = false;
       requestAnimationFrame(function(){ a.classList.add('visible'); });
