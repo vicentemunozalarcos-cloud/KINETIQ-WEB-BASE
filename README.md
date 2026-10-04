@@ -32,4 +32,4 @@ Cada subida queda en el historial, así que siempre se puede volver atrás.
 - [ ] Páginas de Privacidad, Aviso legal y Cookies
 - [ ] Dominio propio
 - [ ] Clip de vídeo para la portada
-- [ ] Foto de Andrés
+- [x] Foto de Andrés
