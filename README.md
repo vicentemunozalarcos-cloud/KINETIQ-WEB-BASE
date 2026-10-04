@@ -2,7 +2,7 @@
 
 Web de **Kinetiq Ejercicio y Recuperación** (Valencia).
 
-🔗 https://vicentemunozalarcos-cloud.github.io/KINETIQ-WEB-BASE/
+🔗 https://kinetiqrecuperacion.es/
 
 ## Archivos
 
@@ -30,6 +30,6 @@ Cada subida queda en el historial, así que siempre se puede volver atrás.
 ## Pendiente
 
 - [ ] Páginas de Privacidad, Aviso legal y Cookies
-- [ ] Dominio propio
+- [x] Dominio propio (kinetiqrecuperacion.es)
 - [ ] Clip de vídeo para la portada
 - [x] Foto de Andrés
